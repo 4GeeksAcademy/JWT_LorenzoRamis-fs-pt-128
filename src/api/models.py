@@ -12,7 +12,7 @@ class User(db.Model):
     user_name: Mapped[str] = mapped_column(String(120), nullable=True)
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password).decode('utf-8')
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

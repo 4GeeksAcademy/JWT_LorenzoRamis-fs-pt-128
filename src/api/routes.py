@@ -6,7 +6,7 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from sqlalchemy import select
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 api = Blueprint('api', __name__)
 
@@ -63,8 +63,13 @@ def login():
                         'token': access_token}), 200
     return jsonify({'error':'Invalid email or password'}), 401
 
-# @api.route('/profile', methods=['GET'])
+@api.route('/profile', methods=['GET'])
+@jwt_required()
+def get_profile():
 
+    user_id = get_jwt_identity()
+    user = db.session.get(User, int(user_id))
 
-    
-    
+    if not user:
+        return jsonify({'error': 'Not found'}), 400
+    return jsonify(user.serialize())    

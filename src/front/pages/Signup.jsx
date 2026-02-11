@@ -1,51 +1,54 @@
-import React, { useEffect, useState } from "react"
-import { useNavigate, Link } from "react-router-dom";
-import { login } from "../services/backendServices.js";
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { signup } from "../services/backendServices"
 
-export const Home = () => {
+export const Signup = () => {
 
-	const navigate = useNavigate()
 	const [user, setUser] = useState({
 		email: '',
-		password: ''
+		password: '',
+		confirmPassword: '',
+		user_name: ''
 	})
-	const [loading, setLoading] = useState()
-	const [error, setError] = useState()
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState('')
+	const navigate = useNavigate()
 
 	const handelChange = (e) => {
-		setUser({
-			...user,
-			[e.target.name]: e.target.value
-		})
+		setUser(
+			{
+				...user,
+				[e.target.name]: e.target.value
+			}
+		)
 	}
+
+	// console.log(user); 
+	// diferencia entre acá y dentro del useEffect
 
 	const handelSubmit = async (e) => {
 		e.preventDefault()
 		setError('')
 
-		if (!user.email || !user.password) {
+		if (!user.email.trim() || !user.password) {
 			setError('Required email and password')
 			return
 		}
 
-		setLoading(true)
-		const response = await login(user)
-		
-		if (response.error) {
-			setError(response.error)
-			setLoading(false);
+		if (user.password !== user.confirmPassword) {
+			setError('password dont match')
 			return
 		}
+		setLoading(true)
+		const response = await signup(user)
 
-		if (response.token) {
-			localStorage.setItem('token', response.token);
-			navigate('/profile');
-		} else {
-			setError(response);
+		if (response.error) {
+			setError(response.error)
+			setLoading(false)
+			return
 		}
+		navigate('/')
 	}
-
-	console.log(user);
 
 	useEffect(() => {
 
@@ -54,7 +57,7 @@ export const Home = () => {
 	return (
 		<>
 			<div className="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-				<div className="card border-secondary border-opacity-25 col-12 col-md-8 col-lg-6 p-3 shadow-lg ">
+				<div className="card col-12 col-md-8 col-lg-6 p-3 shadow-lg ">
 					<form onSubmit={handelSubmit}>
 						{error && (
 							<div className="alert alert-danger" role="alert">
@@ -86,23 +89,46 @@ export const Home = () => {
 								placeholder="Enter your password"
 							/>
 						</div>
+						<div className="mb-3">
+							<label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+							<input
+								type="password"
+								className="form-control"
+								id="password"
+								name="confirmPassword"
+								value={user.confirmPassword}
+								onChange={handelChange}
+								placeholder="Enter your password"
+							/>
+						</div>
+						<div className="mb-3">
+							<label htmlFor="user_name" className="form-label">User Name</label>
+							<input
+								type="user_name"
+								className="form-control"
+								id="user_name"
+								name="user_name"
+								value={user.user_name}
+								onChange={handelChange}
+								placeholder="Enter your User Name"
+							/>
+						</div>
 						<button
 							type="submit"
 							className="btn btn-primary col-12 col-md-6 d-block mx-auto"
 							disabled={loading}>
 							{loading ? (
 								<span className="d-flex aling-item-center">
-									<span className="p-2 w-100"> Loading...</span>
+									<span className="p-2 w-100"> Creating...</span>
 									<span className="spinner-border p-2 flex-shrink-1" role="status"></span>
 								</span>
 							) : (
-								"Login")
+								"Sign Up")
 							}
 						</button>
-						<div className="fs-6 mt-2">Don't you have an account? <Link to={('/signup')}> Sing Up</Link></div>
 					</form>
 				</div>
 			</div >
 		</>
-	);
-}; 
+	)
+}
