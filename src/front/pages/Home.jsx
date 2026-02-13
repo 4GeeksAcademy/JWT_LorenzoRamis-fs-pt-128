@@ -30,7 +30,7 @@ export const Home = () => {
 
 		setLoading(true)
 		const response = await login(user)
-		
+
 		if (response.error) {
 			setError(response.error)
 			setLoading(false);
@@ -53,9 +53,10 @@ export const Home = () => {
 
 	return (
 		<>
-			<div className="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+			<div className="d-flex justify-content-center align-items-center min-vh-100">
 				<div className="card border-secondary border-opacity-25 col-12 col-md-8 col-lg-6 p-3 shadow-lg ">
 					<form onSubmit={handelSubmit}>
+						<p className="text-center text-primary"><i className="fa-solid fa-user-shield fa-2xl"></i></p>
 						{error && (
 							<div className="alert alert-danger" role="alert">
 								{error}

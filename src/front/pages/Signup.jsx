@@ -8,7 +8,7 @@ export const Signup = () => {
 		email: '',
 		password: '',
 		confirmPassword: '',
-		user_name: ''
+		username: ''
 	})
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
@@ -22,9 +22,6 @@ export const Signup = () => {
 			}
 		)
 	}
-
-	// console.log(user); 
-	// diferencia entre acá y dentro del useEffect
 
 	const handelSubmit = async (e) => {
 		e.preventDefault()
@@ -58,6 +55,7 @@ export const Signup = () => {
 		<>
 			<div className="container-fluid d-flex justify-content-center align-items-center min-vh-100">
 				<div className="card col-12 col-md-8 col-lg-6 p-3 shadow-lg ">
+					<p className="text-center text-primary"><i class="fa-solid fa-user-plus fa-2xl"></i></p>
 					<form onSubmit={handelSubmit}>
 						{error && (
 							<div className="alert alert-danger" role="alert">
@@ -102,13 +100,13 @@ export const Signup = () => {
 							/>
 						</div>
 						<div className="mb-3">
-							<label htmlFor="user_name" className="form-label">User Name</label>
+							<label htmlFor="username" className="form-label">User Name</label>
 							<input
-								type="user_name"
+								type="text"
 								className="form-control"
-								id="user_name"
-								name="user_name"
-								value={user.user_name}
+								id="username"
+								name="username"
+								value={user.username}
 								onChange={handelChange}
 								placeholder="Enter your User Name"
 							/>

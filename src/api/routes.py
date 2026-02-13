@@ -28,7 +28,7 @@ def signup():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
-    user_name = data.get('user_name')
+    username = data.get('username')
 
     if not email or not password:
         return jsonify({'error': 'Required email and password'}), 400
@@ -37,7 +37,7 @@ def signup():
 
     if user:
         return jsonify({'error': 'Email already exist'}), 400
-    new_user = User(email = email, user_name = user_name)
+    new_user = User(email = email, username = username)
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()
@@ -60,7 +60,9 @@ def login():
     if user.check_password(password):
         access_token = create_access_token(identity=str(user.id))
         return jsonify({'msg':'Login successfully',
-                        'token': access_token}), 200
+                        'token': access_token,
+                        'user': user.serialize()}), 200,
+                        
     return jsonify({'error':'Invalid email or password'}), 401
 
 @api.route('/profile', methods=['GET'])
@@ -72,4 +74,36 @@ def get_profile():
 
     if not user:
         return jsonify({'error': 'Not found'}), 400
-    return jsonify(user.serialize())    
+    return jsonify(user.serialize()) 
+
+@api.route("/edit", methods=["PUT"])
+@jwt_required()
+def edit_profile():
+
+    user_id = get_jwt_identity()
+    user = db.session.get(User, int(user_id))
+
+    data = request.get_json()
+    new_email = data.get('email')
+    new_password = data.get('password')
+    new_username = data.get('username')
+
+    if not new_email or not new_password:
+        return jsonify({'error':'Invalid email or password'}), 401
+
+    if new_email != user.email:
+        email_exits = db.session.execute(select(User).where(User.email == new_email)).scalar_one_or_none()
+        if email_exits:
+            return jsonify({'error': 'Email already exist'}), 400
+        user.email = new_email
+    
+    
+    if new_username != user.username:
+        username_exits = db.session.execute(select(User).where(User.username==new_username)).scalar_one_or_none()
+        if username_exits:
+            return jsonify({'error': 'Username already exist'}), 400
+        user.username= new_username
+        
+    user.set_password(new_password)
+    db.session.commit()
+    return jsonify({'msg': 'User create successfully'}), 201
