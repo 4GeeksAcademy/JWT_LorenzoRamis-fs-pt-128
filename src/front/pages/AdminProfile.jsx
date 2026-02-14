@@ -52,7 +52,7 @@ export const AdminProfile = () => {
     }
 
     const generateSeed = () => {
-        return Math.random().toString(36).substring(5);
+        return Math.random().toString(5);
     }
 
     const handleRandomAvatar = () => {
@@ -161,19 +161,21 @@ export const AdminProfile = () => {
                                     placeholder="Enter your User Name"
                                 />
                             </div>
-                            <div className="mb-3">
-                                <img src={`https://api.dicebear.com/9.x/big-smile/svg?seed=${user.avatar}`} alt="" />
+                                <div className="col-12 col-md-6 mx-auto d-block">
+                                <img src={`https://api.dicebear.com/9.x/big-smile/svg?seed=${user.avatar}`} alt="" className="card-img" />
                                 <button
                                     type="button"
-                                    className="btn btn-primary"
+                                    className="btn btn-primary w-100 mb-3"
                                     onClick={handleRandomAvatar}
                                 >
                                     Change Avatar
                                 </button>
-                            </div>
+                                </div>
+                                
+                            
                             <button
                                 type="submit"
-                                className="btn btn-primary col-12 col-md-6 d-block mx-auto"
+                                className="btn btn-success col-12 col-md-6 d-block mx-auto"
                                 disabled={loading}>
                                 {loading ? (
                                     <span className="d-flex aling-item-center">

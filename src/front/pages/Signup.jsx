@@ -100,7 +100,7 @@ export const Signup = () => {
 								placeholder="Enter your password"
 							/>
 						</div>
-						<div className="mb-3">
+						{/* <div className="mb-3">
 							<label htmlFor="username" className="form-label">User Name</label>
 							<input
 								type="text"
@@ -111,7 +111,7 @@ export const Signup = () => {
 								onChange={handelChange}
 								placeholder="Enter your User Name"
 							/>
-						</div>
+						</div> */}
 						<button
 							type="submit"
 							className="btn btn-primary col-12 col-md-6 d-block mx-auto"

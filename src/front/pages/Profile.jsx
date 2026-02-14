@@ -49,11 +49,11 @@ export const Profile = () => {
             ) : (
                 <div className="container">
                     {notUsername && (
-                        <div className="alert alert-warning text-center" role="alert">
+                        <div className="alert alert-warning text-center mt-3" role="alert">
                             Please complete your profile, your username. <Link to="/admin">Complete your profile.</Link>
                             AND UPDATE YOUR AVATAR
                         </div>)}
-                    <div className="d-flex justify-content-center align-items-center vh-100">
+                    <div className="d-flex justify-content-center align-items-center mt-3">
                         <div className="card shadow" style={{ width: "18rem" }}>
                             <img src={getAvatarUrl()} alt="" />
                             <div className="card-body text-center">
