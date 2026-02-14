@@ -12,7 +12,10 @@ export const initialStore=()=>{
         title: "Do my homework",
         background: null,
       }
-    ]
+    ],
+    avatar:{
+      avatar: ""
+    }
   }
 }
 
@@ -23,6 +26,12 @@ export default function storeReducer(store, action = {}) {
         ...store,
         message: action.payload
       };
+
+    case "avatar_seed":
+      return{
+        ...store,
+        avatar: action.payload
+      }
       
     case 'add_task':
 

@@ -84,26 +84,21 @@ def edit_profile():
     user = db.session.get(User, int(user_id))
 
     data = request.get_json()
-    new_email = data.get('email')
     new_password = data.get('password')
     new_username = data.get('username')
+    new_avatar = data.get('avatar')
 
-    if not new_email or not new_password:
-        return jsonify({'error':'Invalid email or password'}), 401
-
-    if new_email != user.email:
-        email_exits = db.session.execute(select(User).where(User.email == new_email)).scalar_one_or_none()
-        if email_exits:
-            return jsonify({'error': 'Email already exist'}), 400
-        user.email = new_email
-    
-    
     if new_username != user.username:
         username_exits = db.session.execute(select(User).where(User.username==new_username)).scalar_one_or_none()
         if username_exits:
             return jsonify({'error': 'Username already exist'}), 400
         user.username= new_username
         
-    user.set_password(new_password)
+    if new_password: 
+        user.set_password(new_password)
+
+    if new_avatar:
+        user.avatar= new_avatar
+
     db.session.commit()
-    return jsonify({'msg': 'User create successfully'}), 201
+    return jsonify({'msg': 'Save change successfully'}), 201

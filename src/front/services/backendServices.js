@@ -60,17 +60,3 @@ export const edit = async (user) => {
   return data;
 };
 
-export const getAvatar = async () => {
-  const response = await fetch(
-    `https://api.dicebear.com/9.x/big-smile/svg?seed=Ryan`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    },
-  );
-
-  const data = await response.blob();
-
-  return URL.createObjectURL(data);
-};

@@ -10,6 +10,7 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(nullable=False)
     username: Mapped[str] = mapped_column(String(120), unique=True, nullable=True)
+    avatar: Mapped[str] = mapped_column(nullable=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password).decode('utf-8')
@@ -21,6 +22,7 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
-            "username": self.username
+            "username": self.username,
+            "avatar": self.avatar
             # do not serialize the password, its a security breach
         }

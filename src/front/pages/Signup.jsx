@@ -8,7 +8,8 @@ export const Signup = () => {
 		email: '',
 		password: '',
 		confirmPassword: '',
-		username: ''
+		username: '',
+		avatar: 'default'
 	})
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
